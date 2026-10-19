@@ -1,0 +1,2 @@
+Example text to ccount words.
+Hello there for this test.
