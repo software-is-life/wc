@@ -80,7 +80,11 @@ string copy_file(string filename) {
     return file_contents;
 }
 
-void parse_commands(string text_content, string filename, const vector<string> *commands) {
+/**
+* Added a const * reference to `commands` argument. We don't want to copy vector we instead
+* want to read a reference to the vector so the value is not copied.
+*/
+void parse_commands(string text_content, string filename, const vector<string>* commands) {
     if (commands->empty()) {
         cout << count_bytes(text_content) << " " << count_lines(text_content) << " " << count_words(text_content) << " " << filename << endl;
         return;
