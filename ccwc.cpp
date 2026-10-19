@@ -80,6 +80,26 @@ string copy_file(string filename) {
     return file_contents;
 }
 
+void parse_commands(string text_content, string filename, const vector<string> *commands) {
+    if (commands->empty()) {
+        cout << count_bytes(text_content) << " " << count_lines(text_content) << " " << count_words(text_content) << " " << filename << endl;
+        return;
+    }
+
+    for (string cmd : *commands) {
+        if (cmd == "-c") {
+            cout << count_bytes(text_content) << " ";
+        } else if (cmd == "-w") {
+            cout << count_words(text_content) << " ";
+        } else if (cmd == "-l") {
+            cout << count_lines(text_content) << " ";
+        } else if (cmd == "-m") {
+            cout << count_characters(text_content) << " ";
+        }
+    }
+    cout << filename << endl;
+}
+
 
 int main(int argc, char* argv[]) {
     auto lang = "C++";
@@ -110,27 +130,18 @@ int main(int argc, char* argv[]) {
         }
     }
 
+    if (filenames.size() == 0) {
+        string text_content;
+        string line;
+        while (getline(cin, line)) {
+            text_content += line + '\n';
+        }
+        parse_commands(text_content, "", &commands);
+    }
+
     for (string &filename : filenames) {
-
         string text_content = copy_file(filename);
-
-        if (commands.empty()) {
-            cout << count_bytes(text_content) << " " << count_lines(text_content) << " " << count_words(text_content) << " " << filename << endl;
-            continue;
-        }
-
-        for (string &cmd : commands) {
-            if (cmd == "-c") {
-                cout << count_bytes(text_content) << " ";
-            } else if (cmd == "-w") {
-                cout << count_words(text_content) << " ";
-            } else if (cmd == "-l") {
-                cout << count_lines(text_content) << " ";
-            } else if (cmd == "-m") {
-                cout << count_characters(text_content) << " ";
-            }
-        }
-        cout << filename << endl;
+        parse_commands(text_content, filename, &commands);
     }
     return 0;
 }
